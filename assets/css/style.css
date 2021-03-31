@@ -22,5 +22,7 @@ section {
     margin: auto;
     text-align: center;
     padding: 10px;
-    background-color: green;
+    border-style: solid;
+    border-color: teal;
+    border-width: thin;
 }
