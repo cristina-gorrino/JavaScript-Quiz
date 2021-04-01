@@ -28,3 +28,11 @@ section {
     border-color: teal;
     border-width: thin;
 }
+
+#result-right {
+    display: none;
+}
+
+#result-wrong {
+    display: none;
+}
