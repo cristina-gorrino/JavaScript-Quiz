@@ -6,10 +6,10 @@ var endSection = document.querySelector(".end-container");
 var scoresSection = document.querySelector(".scores-container");
 
 var questionTextEl = document.querySelector("#question-text");
-var answerText1El = document.querySelector("#answer1-text");
-var answerText2El = document.querySelector("#answer2-text");
-var answerText3El = document.querySelector("#answer3-text");
-var answerText4El = document.querySelector("#answer4-text");
+var answerText1El = document.querySelector("#answer1");
+var answerText2El = document.querySelector("#answer2");
+var answerText3El = document.querySelector("#answer3");
+var answerText4El = document.querySelector("#answer4");
 
 var questionOne = {
     questionText: "asdf",
@@ -28,6 +28,7 @@ var questionTwo = {
     correct: "e", 
 }
 var count = 300; // start with 5 minutes
+var score = 0; // score is 5 points per correct question, then add remaining time (seconds)
 
 // This function controls the timer for the quiz. Starts when the start button is clicked
 function setTime() {
@@ -52,7 +53,7 @@ function switchSection(hideSection, showSection) {
 }
 
 // WIP- Updates the question text and set of responses from a set of objects
-function switchQuestion(i) {
+function switchQuestion() {
     var i = 0; // starts quiz at question 1
 
     // collect question objects in an array, then display them
@@ -68,10 +69,21 @@ function switchQuestion(i) {
 
 
 }
-switchQuestion(1);
+
+function checkIfCorrect() {
+    
+}
+
 
 // Actions that happen when start button is clicked
 startButton.addEventListener("click", function () {
     setTime();
     switchSection(introSection, questionSection);
-})
+    switchQuestion();
+});
+
+// Event listeners for answer buttons on questions
+answerText1El.addEventListener("click", checkIfCorrect);
+answerText2El.addEventListener("click", checkIfCorrect);
+answerText3El.addEventListener("click", checkIfCorrect);
+answerText4El.addEventListener("click", checkIfCorrect);
