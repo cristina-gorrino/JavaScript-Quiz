@@ -12,6 +12,7 @@ var answerText3El = document.querySelector("#answer3");
 var answerText4El = document.querySelector("#answer4");
 var resultRightEl = document.querySelector("#result-right");
 var resultWrongEl = document.querySelector("#result-wrong");
+var finalScoreEl = document.querySelector("#final-score");
 
 var questionOne = {
     questionText: "asdf",
@@ -32,22 +33,28 @@ var questionTwo = {
 var questionsArray = [questionOne, questionTwo];
 var i = 0; // index of the questions array, starts at question 1 and increments
 var count = 300; // start with 5 minutes
+var stopTime // variable to stop the timer if the player reaches the end before time is up
 var score = 0; // score is 5 points per correct question, then add remaining time in seconds
 
 // This function controls the timer for the quiz. Starts when the start button is clicked
-function setTime() {
-    // Sets interval in variable
+function setTime(stopTime) {
+    if (stopTime) {
+        clearInterval(timerInterval); // TODO: fix stopping time when finished with questions
+    } else{
+            // Sets interval in variable
     var timerInterval = setInterval(function() {
-      count--;
-      timerEl.textContent = count;
+        count--;
+        timerEl.textContent = count;
+    
+        if(count === 0) {
+          // Stops execution of action at set interval
+          clearInterval(timerInterval);
   
-      if(count === 0) {
-        // Stops execution of action at set interval
-        clearInterval(timerInterval);
+        }
+    
+      }, 1000);
+    }
 
-      }
-  
-    }, 1000);
   }
 
 // Switches the section of the UI that is visible
@@ -56,18 +63,13 @@ function switchSection(hideSection, showSection) {
     showSection.setAttribute("style", "display:block");
 }
 
-// WIP- Updates the question text and set of responses from a set of objects
+// Updates the question text and set of responses from an array of question objects
 function switchQuestion(i) {
-    //var i = 0; // starts quiz at question 1
-
-        questionTextEl.textContent = questionsArray[i].questionText;
-        answerText1El.textContent = questionsArray[i].answer1;
-        answerText2El.textContent = questionsArray[i].answer2;
-        answerText3El.textContent = questionsArray[i].answer3;
-        answerText4El.textContent = questionsArray[i].answer4;
-
-
-
+  questionTextEl.textContent = questionsArray[i].questionText;
+  answerText1El.textContent = questionsArray[i].answer1;
+  answerText2El.textContent = questionsArray[i].answer2;
+  answerText3El.textContent = questionsArray[i].answer3;
+  answerText4El.textContent = questionsArray[i].answer4;
 }
 
 function checkIfCorrect(element) {
@@ -92,8 +94,10 @@ resultRightEl.setAttribute("style", "display:none");
     i ++;
     if (i > questionsArray.length-1){
         console.log('end of the quiz');
+        setTime(stopTime = true);
         score += count; //set final score
         switchSection(questionSection, endSection);
+        submitScore(score);
     } else {
         switchQuestion(i);
     }
@@ -102,6 +106,15 @@ resultRightEl.setAttribute("style", "display:none");
     console.log(score);
 }
 
+function submitScore(score) {
+    // Display the final score
+    finalScoreEl.textContent = score;
+    // Submit initials
+    // local storage
+    // Add it to an ordered list
+    // Ability to clear
+    // Ability to go back to start
+}
 
 // Actions that happen when start button is clicked
 startButton.addEventListener("click", function () {
