@@ -71,7 +71,10 @@ function switchQuestion(i) {
 }
 
 function checkIfCorrect(element) {
-    
+/// Moves to next question afther the user's answer and displays with either right or wrong answer
+ 
+resultWrongEl.setAttribute("style", "display:none");
+resultRightEl.setAttribute("style", "display:none");
 
     var answeredCorrectly = false; // Tracks whether the current question is answered correctly, triggering the switch to the next question.
     if (element.target.textContent === questionsArray[i].correct) {
@@ -80,18 +83,21 @@ function checkIfCorrect(element) {
         resultWrongEl.setAttribute("style", "display:none");
         resultRightEl.setAttribute("style", "display:block");
         answeredCorrectly = true;
-        i ++;
-        if (i > questionsArray.length-1){
-            console.log('end of the quiz');
-        } else {
-            switchQuestion(i);
-        }
     } else {
         resultRightEl.setAttribute("style", "display:none");
         resultWrongEl.setAttribute("style", "display:block");
         count -= 10;
         timerEl.textContent = count;
     }
+    i ++;
+    if (i > questionsArray.length-1){
+        console.log('end of the quiz');
+        score += count; //set final score
+        switchSection(questionSection, endSection);
+    } else {
+        switchQuestion(i);
+    }
+    
     console.log(element.target.textContent);
     console.log(score);
 }
