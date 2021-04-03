@@ -19,6 +19,7 @@ var initialsInput = document.querySelector("#initials-input");
 var scoreListEl = document.querySelector("#score-list");
 var clearButtonEl = document.querySelector("#clear-btn");
 var backButtonEl = document.querySelector("#back-btn");
+var viewScoresEl = document.querySelector("#see-scores");
 
 var questionOne = {
     questionText: "asdf",
@@ -137,17 +138,19 @@ function handleFormSubmit(event) {
 }
 function clearHighScores() {
     localStorage.clear();
-    scoreListEl.removeChild(scoreListEl.child[0]); //TODO: clear is not working
-    /*
-    console.log(scoreListEl.children)
-    for (var j=0; j<scoreListEl.children.length; j++) {
-        scoreListEl.removeChild(scoreListEl.child[j]);
+    var oldScores = scoreListEl.querySelectorAll('li');
+
+    for (var j=0; j<oldScores.length; j++) {
+        scoreListEl.removeChild(oldScores[j]);
     }
-    */ 
 }
 function handleBack() {
     switchSection(scoresSection, introSection);
     // TODO: Need to re-set timer and questions arrar
+}
+
+function handleViewScores() {
+    switchSection(introSection, scoresSection);
 }
 
 // Actions that happen when start button is clicked
@@ -170,3 +173,5 @@ scoreFormEL.addEventListener("submit", handleFormSubmit);
 clearButtonEl.addEventListener("click", clearHighScores);
 // Event listener to go back to the game 
 backButtonEl.addEventListener("click", handleBack);
+// Event listener for "View High Scores" in header
+viewScoresEl.addEventListener("click", handleViewScores);
