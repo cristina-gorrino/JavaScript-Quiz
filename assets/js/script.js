@@ -38,31 +38,28 @@ var questionTwo = {
     correct: "e", 
 }
 var questionsArray = [questionOne, questionTwo];
-var i = 0; // index of the questions array, starts at question 1 and increments
-var count = 300; // start with 5 minutes
-var stopTime // variable to stop the timer if the player reaches the end before time is up
-var score = 0; // score is 5 points per correct question, then add remaining time in seconds
+var i = 0; // index of the questions array, starts at question 1st element and increments
+var count = 10; // start with 5 minutes
+var timerInterval
+var score // score is 5 points per correct question, then add remaining time in seconds
+var newGame = true; // variable that starts the score over when the user tries quiz again
 
 // This function controls the timer for the quiz. Starts when the start button is clicked
-function setTime(stopTime) {
-    if (stopTime) {
-        clearInterval(timerInterval); // TODO: fix stopping time when finished with questions
-    } else{
-            // Sets interval in variable
-    var timerInterval = setInterval(function() {
+function setTime() {
+    // Sets interval running
+    timerInterval = setInterval(function() {
         count--;
         timerEl.textContent = count;
     
         if(count === 0) {
           // Stops execution of action at set interval
           clearInterval(timerInterval);
+          endQuiz(score);
   
         }
     
       }, 1000);
     }
-
-  }
 
 // Switches the section of the UI that is visible
 function switchSection(hideSection, showSection) {
@@ -80,14 +77,17 @@ function switchQuestion(i) {
 }
 
 function checkIfCorrect(element) {
-/// Moves to next question afther the user's answer and displays with either right or wrong answer
+/// Moves to next question afther the user's answer and displays with either right or wrong answer text
  
-resultWrongEl.setAttribute("style", "display:none");
-resultRightEl.setAttribute("style", "display:none");
-
-    var answeredCorrectly = false; // Tracks whether the current question is answered correctly, triggering the switch to the next question.
+  resultWrongEl.setAttribute("style", "display:none");
+  resultRightEl.setAttribute("style", "display:none");
+  // reset the score if the user starts again
+  if (newGame) {
+      score = 0;
+      newGame = false;
+  }
+    
     if (element.target.textContent === questionsArray[i].correct) {
-        console.log("the right answer!");
         score += 5;
         resultWrongEl.setAttribute("style", "display:none");
         resultRightEl.setAttribute("style", "display:block");
@@ -100,18 +100,19 @@ resultRightEl.setAttribute("style", "display:none");
     }
     i ++;
     if (i > questionsArray.length-1){
-        console.log('end of the quiz');
-        setTime(stopTime = true);
-        score += count; //set final score
-        switchSection(questionSection, endSection);
         finalScoreEl.textContent = score;
-        //submitScore(score);
+        endQuiz(score);
+        
     } else {
         switchQuestion(i);
     }
-    
-    console.log(element.target.textContent);
-    console.log(score);
+    return score;
+}
+function endQuiz(score) {
+    finalScoreEl.textContent = score;
+    clearInterval(timerInterval);
+    switchSection(questionSection, endSection);
+
 }
 
 function handleFormSubmit(event) {
@@ -129,9 +130,10 @@ function handleFormSubmit(event) {
     //localStorage.getItem("initials", initials);
     localStorage.setItem("score", score);
     localStorage.setItem("initials", initials);
+    initialsInput.value = '';
     switchSection(endSection, scoresSection);
 
-    // Add it to an ordered list and display on page
+    // Add it to a list and display on page
     var item = document.createElement("li");
     item.textContent = initials.toUpperCase() + " - " + score;
     scoreListEl.appendChild(item);
@@ -146,7 +148,11 @@ function clearHighScores() {
 }
 function handleBack() {
     switchSection(scoresSection, introSection);
-    // TODO: Need to re-set timer and questions arrar
+    // Re-set questions and set up variable to to start quiz again
+    i = 0;
+    switchQuestion(i);
+    newGame = true;
+    return newGame;
 }
 
 function handleViewScores() {
@@ -158,6 +164,9 @@ startButton.addEventListener("click", function () {
     setTime();
     switchSection(introSection, questionSection);
     switchQuestion(i);
+    resultWrongEl.setAttribute("style", "display:none");
+    resultRightEl.setAttribute("style", "display:none");
+    count = 10; //starting time again
 });
 
 // Event listeners for answer buttons on questions
@@ -175,3 +184,6 @@ clearButtonEl.addEventListener("click", clearHighScores);
 backButtonEl.addEventListener("click", handleBack);
 // Event listener for "View High Scores" in header
 viewScoresEl.addEventListener("click", handleViewScores);
+
+// TODO: if you refresh, you lose the high score history
+// TODO: remove console.logs 
