@@ -14,6 +14,10 @@ var resultRightEl = document.querySelector("#result-right");
 var resultWrongEl = document.querySelector("#result-wrong");
 var finalScoreEl = document.querySelector("#final-score");
 
+var scoreFormEL = document.querySelector("#score-form");
+var initialsInput = document.querySelector("#initials-input");
+var scoreListEl = document.querySelector("#score-list");
+
 var questionOne = {
     questionText: "asdf",
     answer1: "a",
@@ -97,7 +101,8 @@ resultRightEl.setAttribute("style", "display:none");
         setTime(stopTime = true);
         score += count; //set final score
         switchSection(questionSection, endSection);
-        submitScore(score);
+        finalScoreEl.textContent = score;
+        //submitScore(score);
     } else {
         switchQuestion(i);
     }
@@ -106,12 +111,27 @@ resultRightEl.setAttribute("style", "display:none");
     console.log(score);
 }
 
-function submitScore(score) {
-    // Display the final score
-    finalScoreEl.textContent = score;
-    // Submit initials
-    // local storage
-    // Add it to an ordered list
+function handleFormSubmit(event) {
+    event.preventDefault();
+    //localStorage.clear();
+    // Submit initials and current score, and save them in local storage
+    score = finalScoreEl.textContent
+    initials = initialsInput.value;
+    // Ensure that user submits something
+    if (!initials) {
+        alert('No initials filled out in form!');
+        return;
+      }
+    //localStorage.getItem("score", score);
+    //localStorage.getItem("initials", initials);
+    localStorage.setItem("score", score);
+    localStorage.setItem("initials", initials);
+    switchSection(endSection, scoresSection);
+
+    // Add it to an ordered list and display on page
+    var item = document.createElement("li");
+    item.textContent = initials.toUpperCase() + " - " + score;
+    scoreListEl.appendChild(item);
     // Ability to clear
     // Ability to go back to start
 }
@@ -129,3 +149,7 @@ answerText1El.addEventListener("click", checkIfCorrect);
 answerText2El.addEventListener("click", checkIfCorrect);
 answerText3El.addEventListener("click", checkIfCorrect);
 answerText4El.addEventListener("click", checkIfCorrect);
+
+// Event listener for submitting initials with score
+
+scoreFormEL.addEventListener("submit", handleFormSubmit);
