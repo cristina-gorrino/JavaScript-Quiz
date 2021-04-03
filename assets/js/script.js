@@ -17,6 +17,8 @@ var finalScoreEl = document.querySelector("#final-score");
 var scoreFormEL = document.querySelector("#score-form");
 var initialsInput = document.querySelector("#initials-input");
 var scoreListEl = document.querySelector("#score-list");
+var clearButtonEl = document.querySelector("#clear-btn");
+var backButtonEl = document.querySelector("#back-btn");
 
 var questionOne = {
     questionText: "asdf",
@@ -113,7 +115,7 @@ resultRightEl.setAttribute("style", "display:none");
 
 function handleFormSubmit(event) {
     event.preventDefault();
-    //localStorage.clear();
+ 
     // Submit initials and current score, and save them in local storage
     score = finalScoreEl.textContent
     initials = initialsInput.value;
@@ -132,8 +134,20 @@ function handleFormSubmit(event) {
     var item = document.createElement("li");
     item.textContent = initials.toUpperCase() + " - " + score;
     scoreListEl.appendChild(item);
-    // Ability to clear
-    // Ability to go back to start
+}
+function clearHighScores() {
+    localStorage.clear();
+    scoreListEl.removeChild(scoreListEl.child[0]); //TODO: clear is not working
+    /*
+    console.log(scoreListEl.children)
+    for (var j=0; j<scoreListEl.children.length; j++) {
+        scoreListEl.removeChild(scoreListEl.child[j]);
+    }
+    */ 
+}
+function handleBack() {
+    switchSection(scoresSection, introSection);
+    // TODO: Need to re-set timer and questions arrar
 }
 
 // Actions that happen when start button is clicked
@@ -143,7 +157,6 @@ startButton.addEventListener("click", function () {
     switchQuestion(i);
 });
 
-
 // Event listeners for answer buttons on questions
 answerText1El.addEventListener("click", checkIfCorrect);
 answerText2El.addEventListener("click", checkIfCorrect);
@@ -151,5 +164,9 @@ answerText3El.addEventListener("click", checkIfCorrect);
 answerText4El.addEventListener("click", checkIfCorrect);
 
 // Event listener for submitting initials with score
-
 scoreFormEL.addEventListener("submit", handleFormSubmit);
+
+// Event listener to clear high scores
+clearButtonEl.addEventListener("click", clearHighScores);
+// Event listener to go back to the game 
+backButtonEl.addEventListener("click", handleBack);
