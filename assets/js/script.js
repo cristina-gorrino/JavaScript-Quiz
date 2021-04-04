@@ -22,24 +22,48 @@ var backButtonEl = document.querySelector("#back-btn");
 var viewScoresEl = document.querySelector("#see-scores");
 
 var questionOne = {
-    questionText: "asdf",
-    answer1: "a",
-    answer2: "b",
-    answer3: "c",
-    answer4: "d",
-    correct: "a",
+    questionText: "Commonly used data types DO NOT include:",
+    answer1: "strings",
+    answer2: "booleans",
+    answer3: "alerts",
+    answer4: "numbers",
+    correct: "alerts",
 }
 var questionTwo = {
-    questionText: "qwerty",
-    answer1: "e",
-    answer2: "f",
-    answer3: "g",
-    answer4: "h",
-    correct: "e", 
+    questionText: "The condition in an if / else statement is enclosed within ____.",
+    answer1: "quotes",
+    answer2: "curly brackets",
+    answer3: "parentheses",
+    answer4: "square brackets",
+    correct: "parentheses", 
 }
-var questionsArray = [questionOne, questionTwo];
+var questionThree = {
+    questionText: "Arrays in JavaScript can be used to store ____.",
+    answer1: "numbers and strings",
+    answer2: "other arrays",
+    answer3: "booleans",
+    answer4: "all of the above",
+    correct: "all of the above", 
+}
+var questionFour = {
+    questionText: "String values must be enclosed within ____ when being assigned to variables.",
+    answer1: "commas",
+    answer2: "curly brackets",
+    answer3: "quotes",
+    answer4: "parentheses",
+    correct: "quotes", 
+}
+var questionFive = {
+    questionText: "A very useful tool used during development and debugging for printing content to the debugger is:",
+    answer1: "JavaScript",
+    answer2: "terminal / bash",
+    answer3: "for loops",
+    answer4: "console.log",
+    correct: "console.log", 
+}
+var questionsArray = [questionOne, questionTwo, questionThree, questionFour, questionFive];
 var i = 0; // index of the questions array, starts at question 1st element and increments
-var count = 10; // start with 5 minutes
+var count = 120; // start with 2 minutes
 var timerInterval
 var score // score is 5 points per correct question, then add remaining time in seconds
 var newGame = true; // variable that starts the score over when the user tries quiz again
@@ -166,7 +190,7 @@ startButton.addEventListener("click", function () {
     switchQuestion(i);
     resultWrongEl.setAttribute("style", "display:none");
     resultRightEl.setAttribute("style", "display:none");
-    count = 10; //starting time again
+    count = 120; //starting time again
 });
 
 // Event listeners for answer buttons on questions
