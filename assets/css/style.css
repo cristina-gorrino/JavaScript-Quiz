@@ -1,6 +1,7 @@
 header {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 50px;
 }
 * {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -28,10 +29,28 @@ section {
     border-width: thin;
 }
 
+button {
+    background-color: teal;
+    color: white;
+    border-radius: 5px;
+}
+
 #result-right {
     display: none;
 }
 
 #result-wrong {
     display: none;
+}
+@media screen and (max-width: 500px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }
