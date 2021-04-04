@@ -67,6 +67,7 @@ var count = 120; // start with 2 minutes
 var timerInterval
 var score // score is 5 points per correct question, then add remaining time in seconds
 var newGame = true; // variable that starts the score over when the user tries quiz again
+var scoresArr = [];
 
 // This function controls the timer for the quiz. Starts when the start button is clicked
 function setTime() {
@@ -150,14 +151,17 @@ function handleFormSubmit(event) {
         alert('No initials filled out in form!');
         return;
       }
-    //localStorage.getItem("score", score);
-    //localStorage.getItem("initials", initials);
-    localStorage.setItem("score", score);
-    localStorage.setItem("initials", initials);
+
+    // Collect cores an initials of repeated games in arrays
+    scoresArr.push({"initials": initials, "score": score});
+    // Save scores and initials arrays in local storage
+    localStorage.setItem("scoresArr", JSON.stringify(scoresArr));
+
+    // clear the form for next input
     initialsInput.value = '';
     switchSection(endSection, scoresSection);
 
-    // Add it to a list and display on page
+    // Add current score and initials to a list and display on page
     var item = document.createElement("li");
     item.textContent = initials.toUpperCase() + " - " + score;
     scoreListEl.appendChild(item);
@@ -180,7 +184,17 @@ function handleBack() {
 }
 
 function handleViewScores() {
-    switchSection(introSection, scoresSection);
+    // Check if we are already on scores page, if not continue
+    if (!(scoresSection.getAttribute("style") === "display:block")){
+        switchSection(introSection, scoresSection);
+        var storedScores = JSON.parse(localStorage.getItem("scoresArr"));
+        // Each stored pair gets added to a list item to display
+        for (var k=0; k < storedScores.length; k++){
+           var item = document.createElement("li")
+           item.textContent = storedScores[k].initials.toUpperCase() + " - " + storedScores[k].score;
+            scoreListEl.appendChild(item);
+        }
+    }
 }
 
 // Actions that happen when start button is clicked
@@ -209,5 +223,4 @@ backButtonEl.addEventListener("click", handleBack);
 // Event listener for "View High Scores" in header
 viewScoresEl.addEventListener("click", handleViewScores);
 
-// TODO: if you refresh, you lose the high score history
-// TODO: remove console.logs 
+
