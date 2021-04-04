@@ -1,6 +1,6 @@
 # JavaScript Quiz
 
-URL: placeholder
+URL: https://cristina-gorrino.github.io/JavaScript-Quiz/
 
 Purpose: To create a timed quiz about JavaScript basics that allows users to see high scores.
 
@@ -18,7 +18,7 @@ Below are some examples of the look and function of this webpage.
 
 ![First question of the quiz](./assets/images/js-quiz2.png "Question 1")
 
-![After a correct answer](./assets/images/js-quiz3png "Correct answer")
+![After a correct answer](./assets/images/js-quiz3.png "Correct answer")
 
 ![End of the quiz](./assets/images/js-quiz4.png "Submit screen")
 
